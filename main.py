@@ -25,6 +25,9 @@ def getColumnLetters():
 def getRowNumberString():
     return("12345678")
 
+def outputText(stringToOutput):
+    print(stringToOutput)
+
 
 def convertLetterToColumNumber(columLetter):
     listOfColumnLetters = getColumnLetters()
@@ -45,7 +48,7 @@ def displayBoard(boardToDisplay):
 
     boardOutput += rowSeparator + columnLetters
 
-    print(boardOutput)
+    outputText(boardOutput)
 
 
 
@@ -79,6 +82,36 @@ def getValueAtPositionOnBoard(coordinate, boardToCheck):
     return(valueAtPosition)
 
 
+def identifyIfValueRepresentsEmptySquare(valueAtPositionOnBoard):
+    if valueAtPositionOnBoard == ".":
+        isEmptySquare = True
+    else:
+        isEmptySquare = False
+    return(isEmptySquare)
+
+
+def testForEmptySquare(coordinatesEntered, chessBoard):
+    valueAtPositionOnBoard = getValueAtPositionOnBoard(coordinatesEntered, chessBoard)
+
+    isEmptySquare = identifyIfValueRepresentsEmptySquare(valueAtPositionOnBoard)
+    if isEmptySquare:
+        outputText("There is no chess piece at " + coordinatesEntered)
+        coordinatesEntered = ""
+    return(coordinatesEntered)
+
+
+
+def inputSquareToMoveFrom(chessBoard):
+    promptText = "Please input the coordinates to move from: "
+    isValidInput, coordinatesEntered = getCoordinatesFromPlayer(promptText)
+    if isValidInput:
+        if (len(coordinatesEntered) == 2):
+            testForEmptySquare(coordinatesEntered, chessBoard)
+    else:
+        outputText("Sorry, I don't understand " + coordinatesEntered)
+        coordinatesEntered = ""
+    return(coordinatesEntered)
+
 
 
 
@@ -89,15 +122,12 @@ def getPlayerMove(gameData):
 
     while isGameInProgress:
 
+        moveFromCoordinate = inputSquareToMoveFrom(gameData["board"])
+
         
-        promptText = "Please input the coordinates to move from: "
-        isValidInput, coordinatesEntered = getCoordinatesFromPlayer(promptText)
-        if isValidInput and (len(coordinatesEntered) == 2):
-            valueAtPositionOnBoard = getValueAtPositionOnBoard(coordinatesEntered, gameData["board"])
-            if valueAtPositionOnBoard == ".":
-                isChessPieceOnSquare = False
-            else:
-                isChessPieceOnSquare = True
+
+
+
 
             
 
