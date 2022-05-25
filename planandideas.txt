@@ -1,0 +1,39 @@
+chess board
+
+mvp
+
+Initialise board
+LOOP;
+    display board
+    user input moves - no move validation in the mvp
+    execute input moves by updating board
+
+
+white is lowercase; so white pawn is p, black pawn in P, etc
+
+
+Initialise board
+    Just load a set of values into a 2 dimensional array (the 'board')
+
+
+
+
+display board
+    Iterate over the board array and print it out
+    decorate with 'a' 'b' 'c', '1' '2' '3' around the board
+
+
+
+user input moves - no move validation in the mvp
+    Input coordinate to move from 
+        basic check that there is actually a piece there
+    Input coordinate to move to (destination)
+
+
+
+execute input moves by updating and displaying board
+    Piece is copied to the destination square - if theer is a piece there it is overwritten by the new piece
+    Square moved from is replaced with a blank character (space?)
+
+
+
