@@ -89,6 +89,13 @@ def getValueAtPositionOnBoard(coordinate, boardToCheck):
     return(valueAtPosition)
 
 
+def setValueAtPositionOnBoard(coordinate, boardToChange, newValue):
+    columNumber = convertLetterToColumNumber(coordinate[0])
+    boardToChange[int(coordinate[1])][columNumber] = newValue
+    return(boardToChange)
+
+
+
 def identifyIfValueRepresentsEmptySquare(valueAtPositionOnBoard):
     if valueAtPositionOnBoard == ".":
         isEmptySquare = True
@@ -135,6 +142,7 @@ def inputSquareToMoveTo():
 def checkForQuitCommand(inputStringToCheck):
     isGameInProgress = True
     if inputStringToCheck.upper() == "Q":
+        outputText("Exirting game.\n\n")
         isGameInProgress = False
     else:
         outputText("Sorry, I don't understand " + inputStringToCheck)
@@ -146,24 +154,29 @@ def checkForQuitCommand(inputStringToCheck):
 def getPlayerMove(gameData):
     isGameInProgress = True
 
-    while isGameInProgress:
+    
 
-        moveFromCoordinate = inputSquareToMoveFrom(gameData["board"])
+    moveFromCoordinate = inputSquareToMoveFrom(gameData["board"])
 
-        if len(moveFromCoordinate) == 2:
-            moveToCoordinate = inputSquareToMoveTo()
-            if len(moveToCoordinate) == 1:
-                isGameInProgress = checkForQuitCommand(moveToCoordinate)
+    if len(moveFromCoordinate) == 2:
+        moveToCoordinate = inputSquareToMoveTo()
+        if len(moveToCoordinate) == 1:
+            isGameInProgress = checkForQuitCommand(moveToCoordinate)
 
-        if len(moveFromCoordinate) == 1:
-            isGameInProgress = checkForQuitCommand(moveFromCoordinate)
+    if len(moveFromCoordinate) == 1:
+        isGameInProgress = checkForQuitCommand(moveFromCoordinate)
 
 
     return isGameInProgress, moveFromCoordinate, moveToCoordinate
 
 
 
+def movePiece(chessBoard, moveFromCoordinate, moveToCoordinate):
+    valueAtPositionOnBoard = getValueAtPositionOnBoard(moveFromCoordinate, chessBoard)
+    chessBoard = setValueAtPositionOnBoard(moveFromCoordinate, chessBoard, ".")
+    chessBoard = setValueAtPositionOnBoard(moveToCoordinate, chessBoard, valueAtPositionOnBoard)
 
+    return(chessBoard)
 
 
 
@@ -178,7 +191,7 @@ def main():
 
         displayBoard(gameData["board"])
         isGameInProgress, moveFromCoordinate, moveToCoordinate = getPlayerMove(gameData)
-        
+        gameData["board"] = movePiece(gameData["board"], moveFromCoordinate, moveToCoordinate)
 
 
 
