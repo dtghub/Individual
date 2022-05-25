@@ -114,6 +114,26 @@ def inputSquareToMoveFrom(chessBoard):
 
 
 
+def inputSquareToMoveTo():
+    promptText = "Please input the coordinates to move to: "
+    isValidInput, coordinatesEntered = getCoordinatesFromPlayer(promptText)
+    if not(isValidInput):
+        outputText("Sorry, I don't understand " + coordinatesEntered)
+        coordinatesEntered = ""
+    return(coordinatesEntered)
+
+
+
+
+
+def checkForQuitCommand(inputStringToCheck):
+    isGameInProgress = True
+    if inputStringToCheck.upper() == "Q":
+        isGameInProgress = False
+    else:
+        outputText("Sorry, I don't understand " + inputStringToCheck)
+    return(isGameInProgress)
+
 
 
 
@@ -124,17 +144,16 @@ def getPlayerMove(gameData):
 
         moveFromCoordinate = inputSquareToMoveFrom(gameData["board"])
 
-        
+        if len(moveFromCoordinate) == 2:
+            moveToCoordinate = inputSquareToMoveTo()
+            if len(moveToCoordinate) == 1:
+                isGameInProgress = checkForQuitCommand(moveToCoordinate)
+
+        if len(moveFromCoordinate) == 1:
+            isGameInProgress = checkForQuitCommand(moveFromCoordinate)
 
 
-
-
-            
-
-
-
-
-    return isGameInProgress, gameData 
+    return isGameInProgress, moveFromCoordinate, moveToCoordinate
 
 
 
@@ -153,7 +172,8 @@ def main():
 
 
         displayBoard(gameData["board"])
-        isGameInProgress, gameData = getPlayerMove(gameData)
+        isGameInProgress, moveFromCoordinate, moveToCoordinate = getPlayerMove(gameData)
+        
 
 
 
