@@ -112,9 +112,8 @@ def inputSquareToMoveFrom(chessBoard):
     promptText = "Please input the coordinates to move from: "
     isValidInput, coordinatesEntered = getCoordinatesFromPlayer(promptText)
     if isValidInput:
-        if (len(coordinatesEntered) == 2):
-            coordinatesEntered = testForEmptySquare(coordinatesEntered, chessBoard)
-    else:
+        coordinatesEntered = testForEmptySquare(coordinatesEntered, chessBoard)
+    elif len(coordinatesEntered) != 1:
         outputText("Sorry, I don't understand " + coordinatesEntered)
         coordinatesEntered = ""
     return(coordinatesEntered)
@@ -124,7 +123,7 @@ def inputSquareToMoveFrom(chessBoard):
 def inputSquareToMoveTo():
     promptText = "Please input the coordinates to move to: "
     isValidInput, coordinatesEntered = getCoordinatesFromPlayer(promptText)
-    if not(isValidInput):
+    if not(isValidInput) and len(coordinatesEntered) != 1:
         outputText("Sorry, I don't understand " + coordinatesEntered)
         coordinatesEntered = ""
     return(coordinatesEntered)
