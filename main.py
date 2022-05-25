@@ -6,14 +6,15 @@ from operator import truediv
 def initGameData():
     gameData = {
         "board": [
-            "RNBQKBNR",
-            "PPPPPPPP",
-            "........",
-            "........",
-            "........",
-            "........",
+            "",
+            "rnbqkbnr",
             "pppppppp",
-            "rnbqkbnr"
+            "........",
+            "........",
+            "........",
+            "........",
+            "PPPPPPPP",
+            "RNBQKBNR",
         ]
     }
     return(gameData)
@@ -38,7 +39,7 @@ def convertLetterToColumNumber(columLetter):
 
 def assembleChessBoardString(boardToDisplay):
     boardOutput = ""
-    for rowNumber in range(0,8):
+    for rowNumber in range(8,0, -1):
         boardOutput += str(rowNumber) + " |" + boardToDisplay[rowNumber] + "| " + str(rowNumber) + "\n"
     return(boardOutput)
 
@@ -112,7 +113,7 @@ def inputSquareToMoveFrom(chessBoard):
     isValidInput, coordinatesEntered = getCoordinatesFromPlayer(promptText)
     if isValidInput:
         if (len(coordinatesEntered) == 2):
-            testForEmptySquare(coordinatesEntered, chessBoard)
+            coordinatesEntered = testForEmptySquare(coordinatesEntered, chessBoard)
     else:
         outputText("Sorry, I don't understand " + coordinatesEntered)
         coordinatesEntered = ""
