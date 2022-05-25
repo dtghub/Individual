@@ -36,16 +36,22 @@ def convertLetterToColumNumber(columLetter):
 
 
 
+def assembleChessBoardString(boardToDisplay):
+    boardOutput = ""
+    for rowNumber in range(0,8):
+        boardOutput += str(rowNumber) + " |" + boardToDisplay[rowNumber] + "| " + str(rowNumber) + "\n"
+    return(boardOutput)
+
+
+
+
 def displayBoard(boardToDisplay):
 
     columnLetters = "   " + getColumnLetters() + "\n"
     rowSeparator = "   --------\n"
+
     boardOutput = columnLetters + rowSeparator
-
-
-    for rowNumber in range(0,8):
-        boardOutput += str(rowNumber) + " |" + boardToDisplay[rowNumber] + "| " + str(rowNumber) + "\n"
-
+    boardOutput += assembleChessBoardString(boardToDisplay)
     boardOutput += rowSeparator + columnLetters
 
     outputText(boardOutput)
@@ -169,7 +175,6 @@ def main():
 
     isGameInProgress = True
     while isGameInProgress:
-
 
         displayBoard(gameData["board"])
         isGameInProgress, moveFromCoordinate, moveToCoordinate = getPlayerMove(gameData)
