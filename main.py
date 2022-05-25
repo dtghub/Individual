@@ -32,14 +32,14 @@ def outputText(stringToOutput):
 
 def convertLetterToColumNumber(columLetter):
     listOfColumnLetters = getColumnLetters()
-    columnNumber = listOfColumnLetters.index(columLetter)
+    columnNumber = listOfColumnLetters.index(columLetter.lower())
     return(columnNumber)
 
 
 
 def assembleChessBoardString(boardToDisplay):
     boardOutput = ""
-    for rowNumber in range(8,0, -1):
+    for rowNumber in range(8, 0, -1):
         boardOutput += str(rowNumber) + " |" + boardToDisplay[rowNumber] + "| " + str(rowNumber) + "\n"
     return(boardOutput)
 
@@ -51,7 +51,7 @@ def displayBoard(boardToDisplay):
     columnLetters = "   " + getColumnLetters() + "\n"
     rowSeparator = "   --------\n"
 
-    boardOutput = columnLetters + rowSeparator
+    boardOutput = "\n" + columnLetters + rowSeparator
     boardOutput += assembleChessBoardString(boardToDisplay)
     boardOutput += rowSeparator + columnLetters
 
@@ -68,7 +68,7 @@ def evaluateCoordinatesEntered(coordinatesEntered):
     columnLetters = getColumnLetters()
     rowNumbersString = getRowNumberString()
     if len(coordinatesEntered) == 2:
-        if (coordinatesEntered[0] in columnLetters) and (coordinatesEntered[1] in rowNumbersString):
+        if (coordinatesEntered[0].lower() in columnLetters) and (coordinatesEntered[1] in rowNumbersString):
             isValidInput = True
     return(isValidInput)
 
@@ -91,7 +91,12 @@ def getValueAtPositionOnBoard(coordinate, boardToCheck):
 
 def setValueAtPositionOnBoard(coordinate, boardToChange, newValue):
     columNumber = convertLetterToColumNumber(coordinate[0])
-    boardToChange[int(coordinate[1])][columNumber] = newValue
+
+    rowToChange = list(boardToChange[int(coordinate[1])])
+    rowToChange[columNumber] = newValue
+    changedRow = "".join(rowToChange)
+
+    boardToChange[int(coordinate[1])] = changedRow
     return(boardToChange)
 
 
@@ -109,14 +114,14 @@ def testForEmptySquare(coordinatesEntered, chessBoard):
 
     isEmptySquare = identifyIfValueRepresentsEmptySquare(valueAtPositionOnBoard)
     if isEmptySquare:
-        outputText("There is no chess piece at " + coordinatesEntered)
+        outputText("\n\nThere is no chess piece at " + coordinatesEntered)
         coordinatesEntered = ""
     return(coordinatesEntered)
 
 
 
 def inputSquareToMoveFrom(chessBoard):
-    promptText = "Please input the coordinates to move from: "
+    promptText = "Please input the coordinates to move from\ne.g. 'e2' (or 'q' to exit): "
     isValidInput, coordinatesEntered = getCoordinatesFromPlayer(promptText)
     if isValidInput:
         coordinatesEntered = testForEmptySquare(coordinatesEntered, chessBoard)
@@ -157,6 +162,7 @@ def getPlayerMove(gameData):
     
 
     moveFromCoordinate = inputSquareToMoveFrom(gameData["board"])
+    moveToCoordinate = moveFromCoordinate
 
     if len(moveFromCoordinate) == 2:
         moveToCoordinate = inputSquareToMoveTo()
@@ -191,7 +197,8 @@ def main():
 
         displayBoard(gameData["board"])
         isGameInProgress, moveFromCoordinate, moveToCoordinate = getPlayerMove(gameData)
-        gameData["board"] = movePiece(gameData["board"], moveFromCoordinate, moveToCoordinate)
+        if moveFromCoordinate != "" and moveToCoordinate != "" and isGameInProgress:
+            gameData["board"] = movePiece(gameData["board"], moveFromCoordinate, moveToCoordinate)
 
 
 
