@@ -1,9 +1,28 @@
 import sqlite3
-import sys
-sys.path.append('/home/derek/TSI1/Individual')
-
+# import sys
+# sys.path.append('/home/derek/TSI1/Individual')
+from ConsoleInput import ConsoleInput
+from ConsoleOutput import ConsoleOutput
 
 class ChessBoard:
+
+    game_input = ConsoleInput()
+    game_output = ConsoleOutput()
+
+
+    def set_game_input(self, game_input):
+        self.game_input = game_input
+
+    def set_game_output(self, game_output):
+        self.game_output = game_output
+
+
+
+
+
+
+
+
     def initGameData(self):
         gameData = {
             "board": [
@@ -32,7 +51,7 @@ class ChessBoard:
         return("12345678")
 
     def outputText(self, stringToOutput):
-        print(stringToOutput)
+        self.game_output.display(stringToOutput)
 
 
     def emphasisedOutputText(self, stringToOutput):
@@ -88,7 +107,7 @@ class ChessBoard:
 
 
     def getInputFromPlayer(self, textToDisplay):
-        playerInput = input(textToDisplay)
+        playerInput = self.game_input.get_string(textToDisplay)
         isValidInput = self.evaluatePlayerInput(playerInput)
         return(isValidInput, playerInput)
 
