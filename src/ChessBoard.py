@@ -1,13 +1,13 @@
 import sqlite3
 # import sys
 # sys.path.append('/home/derek/TSI1/Individual')
-from ConsoleInput import ConsoleInput
-from ConsoleOutput import ConsoleOutput
+import ConsoleInput
+import ConsoleOutput
 
 class ChessBoard:
 
-    game_input = ConsoleInput()
-    game_output = ConsoleOutput()
+    game_input = ConsoleInput.ConsoleInput()
+    game_output = ConsoleOutput.ConsoleOutput()
 
 
     def set_game_input(self, game_input):

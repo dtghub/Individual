@@ -1,13 +1,19 @@
 import sys
+sys.path.append('../src')
 sys.path.append('/home/derek/TSI1/Individual/src')
-from ChessBoard import ChessBoard
+
+import ChessBoard
 import unittest
+import TestInput
+import TestOutput
 
 
 
 
 class TestChessBoard(unittest.TestCase):
-    chessBoard = ChessBoard()
+    chessBoard = ChessBoard.ChessBoard()
+    test_input = TestInput.TestInput()
+    test_output = TestOutput.TestOutput()
 
     @classmethod
     def setUpClass(cls):
@@ -23,9 +29,14 @@ class TestChessBoard(unittest.TestCase):
             "RNBQKBNR",
         ]
 
+        cls.chessBoard.set_game_output(cls.test_output)
+        cls.chessBoard.set_game_input(cls.test_input)
         cls.listOfColumnLetters = "abcdefgh"
 
 
+
+    def setUp(self):
+        self.test_output.reset_list_of_test_outputs()
 
 
 
@@ -64,13 +75,23 @@ class TestChessBoard(unittest.TestCase):
         self.assertEquals(expectedString, returnedString)
 
 
-    # to be done
-    # def test_outputText(self, stringToOutput):
 
 
 
-    # to be done
-    # def test_emphasisedOutputText(self, stringToOutput):
+
+    def test_outputText(self):
+        self.chessBoard.outputText("Testing text output")
+        outputText = self.test_output.get_list_of_test_outputs()
+        self.assertEquals(outputText[0], ["Testing text output"])
+
+
+
+    def test_emphasisedOutputText(self):
+        self.chessBoard.emphasisedOutputText("Test output emphasised")
+        outputText = self.test_output.get_list_of_test_outputs()
+        self.assertEquals(outputText[0], ["\n***Test output emphasised***"])
+
+
 
 
 
@@ -97,7 +118,20 @@ class TestChessBoard(unittest.TestCase):
 
 
 
+    def test_getInputFromPlayer_e1(self):
+        player_enters = "e2"
+        self.test_input.set_list_of_test_inputs([player_enters])
+        isValidInput, playerInput = self.chessBoard.getInputFromPlayer("Howdy")
+        self.assertTrue(isValidInput)
+        self.assertEquals(playerInput, player_enters)
 
+
+    def test_getInputFromPlayer_m2(self):
+        player_enters = "m2"
+        self.test_input.set_list_of_test_inputs([player_enters])
+        isValidInput, playerInput = self.chessBoard.getInputFromPlayer("Howdy")
+        self.assertFalse(isValidInput)
+        self.assertEquals(playerInput, player_enters)
 
 
 
