@@ -38,9 +38,15 @@ class TestChessBoard(unittest.TestCase):
         gameData = self.chessBoard.initGameData()
         self.assertEquals(len(testBoard), len(gameData["board"]))
 
+    def test_initGameData_firstRow(self):
+        first_testBoard_Row = self.reference_chessBoardList[1]
+        first_gameData_Row = self.chessBoard.initGameData()["board"][1]
+        self.assertEquals(first_testBoard_Row, first_gameData_Row)
 
-
-
+    def test_initGameData_middleRow(self):
+        first_testBoard_Row = self.reference_chessBoardList[4]
+        first_gameData_Row = self.chessBoard.initGameData()["board"][4]
+        self.assertEquals(first_testBoard_Row, first_gameData_Row)
 
 
 
