@@ -1,6 +1,5 @@
 
-
-from operator import truediv
+import sqlite3 as sl
 
 
 def initGameData():
@@ -18,6 +17,10 @@ def initGameData():
         ]
     }
     return(gameData)
+
+
+
+
 
 
 def getColumnLetters():
@@ -142,16 +145,92 @@ def inputSquareToMoveTo():
 
 
 
+def saveBoard(chessBoard):
 
 
-def checkForQuitCommand(inputStringToCheck):
+    con = sl.connect('chessBoard.db')
+    c = con.cursor()
+
+    # Generic cde used to check if table exists   
+    #get the count of tables with the name
+    c.execute(''' SELECT count(name) FROM sqlite_master WHERE type='table' AND name='board' ''')
+
+    #if the count is 1, then table exists
+    if c.fetchone()[0]==1 : 
+        c.execute("""
+        DROP TABLE BOARD;
+
+        """)
+        
+        print('Table existed.')
+    
+
+
+
+
+    c.execute("""
+        CREATE TABLE BOARD (
+            id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+            row TEXT,
+        );
+        """)
+
+
+
+
+def loadBoard():
+    chessBoard = ['']
+    
+
+    conn = sl.connect('chessBoard.db')
+    c = conn.cursor()
+
+    # Generic cde used to check if table exists   
+    #get the count of tables with the name
+    c.execute(''' SELECT count(name) FROM sqlite_master WHERE type='table' AND name='students' ''')
+
+    #if the count is 1, then table exists
+    if c.fetchone()[0]==1 : {
+        print('Table exists.')
+    }
+    
+
+    c.execute("select * from androidphones")
+    
+    rows = c.fetchall()
+
+    for row in rows:
+        chessBoard.append(row[1])
+
+
+
+
+
+
+    #commit the changes to db			
+    conn.commit()
+    #close the connection
+    conn.close()
+
+    return(chessBoard)
+
+
+
+
+
+
+def checkForUserCommand(inputStringToCheck, chessBoard):
     isGameInProgress = True
     if inputStringToCheck.upper() == "Q":
         outputText("Exirting game.\n\n")
         isGameInProgress = False
+    elif inputStringToCheck.upper() == "S":
+        saveBoard(chessBoard)
+    elif inputStringToCheck.upper() == "L":
+        chessBoard = loadBoard()
     else:
         outputText("Sorry, I don't understand " + inputStringToCheck)
-    return(isGameInProgress)
+    return(isGameInProgress, chessBoard)
 
 
 
@@ -159,7 +238,7 @@ def checkForQuitCommand(inputStringToCheck):
 def getPlayerMove(gameData):
     isGameInProgress = True
 
-    
+    chessBoard = gameData["board"]
 
     moveFromCoordinate = inputSquareToMoveFrom(gameData["board"])
     moveToCoordinate = moveFromCoordinate
@@ -167,13 +246,13 @@ def getPlayerMove(gameData):
     if len(moveFromCoordinate) == 2:
         moveToCoordinate = inputSquareToMoveTo()
         if len(moveToCoordinate) == 1:
-            isGameInProgress = checkForQuitCommand(moveToCoordinate)
+            isGameInProgress, chessBoard = checkForUserCommand(moveToCoordinate, chessBoard)
 
     if len(moveFromCoordinate) == 1:
-        isGameInProgress = checkForQuitCommand(moveFromCoordinate)
+        isGameInProgress,  chessBoard = checkForUserCommand(moveFromCoordinate, chessBoard)
 
-
-    return isGameInProgress, moveFromCoordinate, moveToCoordinate
+    gameData["board"] = chessBoard
+    return gameData, isGameInProgress, moveFromCoordinate, moveToCoordinate
 
 
 
@@ -196,7 +275,7 @@ def main():
     while isGameInProgress:
 
         displayBoard(gameData["board"])
-        isGameInProgress, moveFromCoordinate, moveToCoordinate = getPlayerMove(gameData)
+        gameData, isGameInProgress, moveFromCoordinate, moveToCoordinate = getPlayerMove(gameData)
         if moveFromCoordinate != "" and moveToCoordinate != "" and isGameInProgress:
             gameData["board"] = movePiece(gameData["board"], moveFromCoordinate, moveToCoordinate)
 
