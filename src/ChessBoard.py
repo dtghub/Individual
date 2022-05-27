@@ -154,8 +154,8 @@ class ChessBoard:
 
 
     def checkIfBoardTableAlreadyExists(self, databaseCursor):
-        self.databaseCursor.execute("SELECT count(name) FROM sqlite_master WHERE type='table' AND name='board'")
-        isAlreadyExistingTable = self.databaseCursor.fetchone()[0] == 1
+        databaseCursor.execute("SELECT count(name) FROM sqlite_master WHERE type='table' AND name='board'")
+        isAlreadyExistingTable = databaseCursor.fetchone()[0] == 1
         return isAlreadyExistingTable
 
 
@@ -209,7 +209,7 @@ class ChessBoard:
             self.emphasisedOutputText("No save game found.")
 
         databaseConnection.close()
-        self.emphasisedOutputText("Saved board loaded.")
+        self.emphasisedOutputText("Preiously saved board has been loaded.")
         return(chessBoard)
 
 
