@@ -33,6 +33,13 @@ def outputText(stringToOutput):
     print(stringToOutput)
 
 
+def emphasisedOutputText(stringToOutput):
+    emphasisedString = "\n***"
+    emphasisedString += stringToOutput
+    emphasisedString += "***"
+    outputText(emphasisedString)
+
+
 def convertLetterToColumNumber(columLetter):
     listOfColumnLetters = getColumnLetters()
     columnNumber = listOfColumnLetters.index(columLetter.lower())
@@ -66,22 +73,22 @@ def displayBoard(boardToDisplay):
 
 
 
-def evaluateCoordinatesEntered(coordinatesEntered):
+def evaluatePlayerInput(inputFromPlayer):
     isValidInput = False
     columnLetters = getColumnLetters()
     rowNumbersString = getRowNumberString()
-    if len(coordinatesEntered) == 2:
-        if (coordinatesEntered[0].lower() in columnLetters) and (coordinatesEntered[1] in rowNumbersString):
+    if len(inputFromPlayer) == 2:
+        if (inputFromPlayer[0].lower() in columnLetters) and (inputFromPlayer[1] in rowNumbersString):
             isValidInput = True
     return(isValidInput)
 
 
 
 
-def getCoordinatesFromPlayer(textToDisplay):
-    playerCoordinates = input(textToDisplay)
-    isValidInput = evaluateCoordinatesEntered(playerCoordinates)
-    return(isValidInput, playerCoordinates)
+def getInputFromPlayer(textToDisplay):
+    playerInput = input(textToDisplay)
+    isValidInput = evaluatePlayerInput(playerInput)
+    return(isValidInput, playerInput)
 
 
 
@@ -112,36 +119,36 @@ def identifyIfValueRepresentsEmptySquare(valueAtPositionOnBoard):
     return(isEmptySquare)
 
 
-def testForEmptySquare(coordinatesEntered, chessBoard):
-    valueAtPositionOnBoard = getValueAtPositionOnBoard(coordinatesEntered, chessBoard)
+def testForEmptySquare(inputFromPlayer, chessBoard):
+    valueAtPositionOnBoard = getValueAtPositionOnBoard(inputFromPlayer, chessBoard)
 
     isEmptySquare = identifyIfValueRepresentsEmptySquare(valueAtPositionOnBoard)
     if isEmptySquare:
-        outputText("\n\nThere is no chess piece at " + coordinatesEntered)
-        coordinatesEntered = ""
-    return(coordinatesEntered)
+        emphasisedOutputText("There is no chess piece at " + inputFromPlayer)
+        inputFromPlayer = ""
+    return(inputFromPlayer)
 
 
 
 def inputSquareToMoveFrom(chessBoard):
     promptText = "Please input the coordinates to move from\ne.g. 'e2' (or 'q' to exit): "
-    isValidInput, coordinatesEntered = getCoordinatesFromPlayer(promptText)
+    isValidInput, inputFromPlayer = getInputFromPlayer(promptText)
     if isValidInput:
-        coordinatesEntered = testForEmptySquare(coordinatesEntered, chessBoard)
-    elif len(coordinatesEntered) != 1:
-        outputText("Sorry, I don't understand " + coordinatesEntered)
-        coordinatesEntered = ""
-    return(coordinatesEntered)
+        inputFromPlayer = testForEmptySquare(inputFromPlayer, chessBoard)
+    elif len(inputFromPlayer) != 1:
+        emphasisedOutputText("Sorry, I don't understand '" + inputFromPlayer+ "'")
+        inputFromPlayer = ""
+    return(inputFromPlayer)
 
 
 
 def inputSquareToMoveTo():
     promptText = "Please input the coordinates to move to: "
-    isValidInput, coordinatesEntered = getCoordinatesFromPlayer(promptText)
-    if not(isValidInput) and len(coordinatesEntered) != 1:
-        outputText("Sorry, I don't understand " + coordinatesEntered)
-        coordinatesEntered = ""
-    return(coordinatesEntered)
+    isValidInput, inputFromPlayer = getInputFromPlayer(promptText)
+    if not(isValidInput) and len(inputFromPlayer) != 1:
+        emphasisedOutputText("Sorry, I don't understand '" + inputFromPlayer+ "'")
+        inputFromPlayer = ""
+    return(inputFromPlayer)
 
 
 def checkIfBoardTableAlreadyExists(databaseCursor):
@@ -171,7 +178,7 @@ def saveBoard(chessBoard):
         sqlInsertString = 'INSERT INTO board(row) VALUES("' + row + '")'
         databaseCursor.execute(sqlInsertString)
     databaseConnection.commit()
-    outputText("**Current position saved.**")
+    emphasisedOutputText("Current position saved.")
 
 
 
@@ -197,10 +204,10 @@ def loadBoard(chessBoard):
     if isAlreadyExistingTable: 
         chessBoard = fetchSavedTableBoard(databaseCursor, chessBoard)
     else:
-        outputText("**No save game found.***")
+        emphasisedOutputText("No save game found.")
 
     databaseConnection.close()
-    outputText("\n**Saved board loaded.**")
+    emphasisedOutputText("Saved board loaded.")
     return(chessBoard)
 
 
@@ -211,14 +218,14 @@ def loadBoard(chessBoard):
 def checkForUserCommand(inputStringToCheck, chessBoard):
     isGameInProgress = True
     if inputStringToCheck.upper() == "Q":
-        outputText("Exirting game.\n\n")
+        outputText("Exiting game.\n\n")
         isGameInProgress = False
     elif inputStringToCheck.upper() == "S":
         saveBoard(chessBoard)
     elif inputStringToCheck.upper() == "L":
         chessBoard = loadBoard(chessBoard)
     else:
-        outputText("Sorry, I don't understand " + inputStringToCheck)
+        emphasisedOutputText("Sorry, I don't understand " + inputStringToCheck)
     return(isGameInProgress, chessBoard)
 
 
