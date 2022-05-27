@@ -153,13 +153,12 @@ def saveBoard(chessBoard):
 
     # Generic cde used to check if table exists   
     #get the count of tables with the name
-    c.execute(''' SELECT count(name) FROM sqlite_master WHERE type='table' AND name='board' ''')
+    c.execute(""" SELECT count(name) FROM sqlite_master WHERE type='table' AND name='board' """)
 
     #if the count is 1, then table exists
-    if c.fetchone()[0]==1 : 
+    if c.fetchone()[0] == 1: 
         c.execute("""
-        DROP TABLE BOARD;
-
+        DROP TABLE board;
         """)
         
         print('Table existed.')
@@ -169,17 +168,22 @@ def saveBoard(chessBoard):
 
 
     c.execute("""
-        CREATE TABLE BOARD (
+        CREATE TABLE board (
             id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-            row TEXT,
+            row TEXT
         );
         """)
+    
+    for row in chessBoard:
+        sqlInsertString = 'INSERT INTO board(row) VALUES("' + row + '")'
+        c.execute(sqlInsertString)
+        
+    con.commit()
 
 
 
+def loadBoard(chessBoard):
 
-def loadBoard():
-    chessBoard = ['']
     
 
     conn = sl.connect('chessBoard.db')
@@ -187,28 +191,35 @@ def loadBoard():
 
     # Generic cde used to check if table exists   
     #get the count of tables with the name
-    c.execute(''' SELECT count(name) FROM sqlite_master WHERE type='table' AND name='students' ''')
+    c.execute(""" SELECT count(name) FROM sqlite_master WHERE type='table' AND name='board' """)
 
+
+    # print(c.fetchone()[0])
     #if the count is 1, then table exists
-    if c.fetchone()[0]==1 : {
+    if c.fetchone()[0] == 1:
         print('Table exists.')
-    }
-    
+        
+        
 
-    c.execute("select * from androidphones")
-    
-    rows = c.fetchall()
-
-    for row in rows:
-        chessBoard.append(row[1])
-
-
-
-
+        c.execute("select * from board")
+        
+        rows = c.fetchall()
+        print(rows)
+        chessBoard = []
+        for row in rows:
+            chessBoard.append(row[1])
+            print(row)
 
 
-    #commit the changes to db			
-    conn.commit()
+
+
+
+
+        #commit the changes to db			
+        conn.commit()
+    else:
+        print("No save game found.")
+
     #close the connection
     conn.close()
 
@@ -227,7 +238,7 @@ def checkForUserCommand(inputStringToCheck, chessBoard):
     elif inputStringToCheck.upper() == "S":
         saveBoard(chessBoard)
     elif inputStringToCheck.upper() == "L":
-        chessBoard = loadBoard()
+        chessBoard = loadBoard(chessBoard)
     else:
         outputText("Sorry, I don't understand " + inputStringToCheck)
     return(isGameInProgress, chessBoard)
@@ -276,7 +287,7 @@ def main():
 
         displayBoard(gameData["board"])
         gameData, isGameInProgress, moveFromCoordinate, moveToCoordinate = getPlayerMove(gameData)
-        if moveFromCoordinate != "" and moveToCoordinate != "" and isGameInProgress:
+        if len(moveFromCoordinate) == 2 and len(moveToCoordinate) == 2 and isGameInProgress:
             gameData["board"] = movePiece(gameData["board"], moveFromCoordinate, moveToCoordinate)
 
 
