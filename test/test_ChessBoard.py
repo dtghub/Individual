@@ -9,25 +9,34 @@ import unittest
 class TestChessBoard(unittest.TestCase):
     chessBoard = ChessBoard()
 
+    @classmethod
+    def setUpClass(cls):
+        cls.reference_chessBoardList = [
+            "",
+            "rnbqkbnr",
+            "pppppppp",
+            "........",
+            "........",
+            "........",
+            "........",
+            "PPPPPPPP",
+            "RNBQKBNR",
+        ]
 
 
 
-    def test_initGameData(self):
-        reference_chessBoardList = [
-                "",
-                "rnbqkbnr",
-                "pppppppp",
-                "........",
-                "........",
-                "........",
-                "........",
-                "PPPPPPPP",
-                "RNBQKBNR",
-            ]
-        
+
+
+
+
+
+
+
+
+    def test_initGameData_ListLength(self):
+        testBoard = self.reference_chessBoardList
         gameData = self.chessBoard.initGameData()
-
-        self.assertEquals(len(reference_chessBoardList), len(gameData["board"]))
+        self.assertEquals(len(testBoard), len(gameData["board"]))
 
 
 
