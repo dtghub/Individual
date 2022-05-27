@@ -1,5 +1,5 @@
 
-import sqlite3 as sl
+import sqlite3
 
 
 def initGameData():
@@ -144,30 +144,23 @@ def inputSquareToMoveTo():
     return(coordinatesEntered)
 
 
+def checkIfBoardTableAlreadyExists(databaseCursor):
+    databaseCursor.execute("SELECT count(name) FROM sqlite_master WHERE type='table' AND name='board'")
+    isAlreadyExistingTable = databaseCursor.fetchone()[0] == 1
+    return isAlreadyExistingTable
+
+
+
 
 def saveBoard(chessBoard):
+    databaseConnection = sqlite3.connect('chessBoard.db')
+    databaseCursor = databaseConnection.cursor()
 
-
-    con = sl.connect('chessBoard.db')
-    c = con.cursor()
-
-    # Generic cde used to check if table exists   
-    #get the count of tables with the name
-    c.execute(""" SELECT count(name) FROM sqlite_master WHERE type='table' AND name='board' """)
-
-    #if the count is 1, then table exists
-    if c.fetchone()[0] == 1: 
-        c.execute("""
-        DROP TABLE board;
-        """)
-        
-        print('Table existed.')
+    isAlreadyExistingTable = checkIfBoardTableAlreadyExists(databaseCursor)
+    if isAlreadyExistingTable: 
+        databaseCursor.execute("DROP TABLE board;")
     
-
-
-
-
-    c.execute("""
+    databaseCursor.execute("""
         CREATE TABLE board (
             id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
             row TEXT
@@ -176,9 +169,11 @@ def saveBoard(chessBoard):
     
     for row in chessBoard:
         sqlInsertString = 'INSERT INTO board(row) VALUES("' + row + '")'
-        c.execute(sqlInsertString)
-        
-    con.commit()
+        databaseCursor.execute(sqlInsertString)
+    databaseConnection.commit()
+    outputText("**Current position saved.**")
+
+
 
 
 
@@ -186,7 +181,7 @@ def loadBoard(chessBoard):
 
     
 
-    conn = sl.connect('chessBoard.db')
+    conn = sqlite3.connect('chessBoard.db')
     c = conn.cursor()
 
     # Generic cde used to check if table exists   
