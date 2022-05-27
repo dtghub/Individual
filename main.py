@@ -176,42 +176,31 @@ def saveBoard(chessBoard):
 
 
 
-
-def loadBoard(chessBoard):
-
-    
-
-    conn = sqlite3.connect('chessBoard.db')
-    c = conn.cursor()
-
-    # Generic cde used to check if table exists   
-    #get the count of tables with the name
-    c.execute(""" SELECT count(name) FROM sqlite_master WHERE type='table' AND name='board' """)
-
-
-    # print(c.fetchone()[0])
-    #if the count is 1, then table exists
-    if c.fetchone()[0] == 1:
-        print('Table exists.')
-        
-        
-
-        c.execute("select * from board")
-        
-        rows = c.fetchall()
+def fetchSavedTableBoard(databaseCursor, chessBoard):
+        databaseCursor.execute("select * from board")
+        rows = databaseCursor.fetchall()
         chessBoard = []
         for row in rows:
             chessBoard.append(row[1])
+        return(chessBoard)
 
 
-        #commit the changes to db			
-        conn.commit()
+
+
+
+
+def loadBoard(chessBoard):
+    databaseConnection = sqlite3.connect('chessBoard.db')
+    databaseCursor = databaseConnection.cursor()
+
+    isAlreadyExistingTable = checkIfBoardTableAlreadyExists(databaseCursor)
+    if isAlreadyExistingTable: 
+        chessBoard = fetchSavedTableBoard(databaseCursor, chessBoard)
     else:
-        print("No save game found.")
+        outputText("**No save game found.***")
 
-    #close the connection
-    conn.close()
-
+    databaseConnection.close()
+    outputText("\n**Saved board loaded.**")
     return(chessBoard)
 
 
