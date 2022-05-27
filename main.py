@@ -204,15 +204,9 @@ def loadBoard(chessBoard):
         c.execute("select * from board")
         
         rows = c.fetchall()
-        print(rows)
         chessBoard = []
         for row in rows:
             chessBoard.append(row[1])
-            print(row)
-
-
-
-
 
 
         #commit the changes to db			

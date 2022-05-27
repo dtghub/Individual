@@ -37,3 +37,28 @@ execute input moves by updating and displaying board
 
 
 
+
+
+
+
+
+-------------------------
+
+
+
+Link to class with the data load (load file, external call, database call) functions to be doubled
+List the functions that can be double, you don't need to a stub for all
+Link to class with unit tests
+List names of unit tests methods for stub, mock and fake
+
+	
+Clean Code (20%)
+Refactoring (10%)
+Adapter Design Pattern (10%)
+Doubling Stub (10%)
+Doubling Mocking (20%)
+Doubling Faking (10%)
+Unit Test Coverage (10%)
+
+
+
