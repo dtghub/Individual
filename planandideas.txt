@@ -40,6 +40,22 @@ execute input moves by updating and displaying board
 
 
 
+------------------------------------
+
+Next (possible) steps after MVP
+
+use database (sqlite3) to implement simple save game feature
+
+use the reserved 'row 0' in the chess board data struct to store more game state data (captured pieces, names of players etc)
+
+
+
+
+
+
+
+
+
 
 
 -------------------------
@@ -60,5 +76,10 @@ Doubling Mocking (20%)
 Doubling Faking (10%)
 Unit Test Coverage (10%)
 
+
+
+Stub – A function to return a hardcoded data structure
+Mocking – A mocking framework is used to set dummy values to be returned from mocked classes at runtime. 
+Faking -  A stub with logic. A simplified version of a real external application, to create fake responses. An in memory database, replaying recorded inputs, local responses such as web pages.
 
 
