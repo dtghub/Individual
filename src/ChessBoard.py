@@ -158,7 +158,7 @@ class ChessBoard:
 
 
     def inputSquareToMoveFrom(self, chessBoard):
-        promptText = "Please input the coordinates to move from\ne.g. 'e2' (or 'q' to exit): "
+        promptText = "Please input the coordinates to move from\ne.g. 'e2' ('s' to save, 'l' to load or 'q' to exit): "
         isValidInput, inputFromPlayer = self.getInputFromPlayer(promptText)
         if isValidInput:
             inputFromPlayer = self.testForEmptySquare(inputFromPlayer, chessBoard)
