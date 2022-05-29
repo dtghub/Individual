@@ -1,0 +1,53 @@
+The game is located at ./src/ChessBoard.py
+
+
+This should include a stub, mocking and faking in the data layer. Please submit the following:
+Link to class with the data load (load file, external call, database call) functions to be doubled
+
+database call; ChessBoard.saveBoard() (in ./src/ChessBoard.py) has been faked using DB.py with TestMemoryDB.py for the in-memory database testing
+
+
+
+List the functions that can be double, you don't need to a stub for all
+
+emphasisedOutputText
+convertLetterToColumNumber
+assembleChessBoardString
+displayBoard
+evaluatePlayerInput
+getInputFromPlayer
+getValueAtPositionOnBoard
+setValueAtPositionOnBoard
+identifyIfValueRepresentsEmptySquare
+testForEmptySquare
+inputSquareToMoveFrom
+inputSquareToMoveTo
+checkIfBoardTableAlreadyExists
+saveBoard
+fetchSavedTableBoard
+loadBoard
+checkForUserCommand
+getPlayerMove
+movePiece
+
+
+
+
+Link to class with unit tests
+
+./test/test_ChessBoard.py
+
+
+
+List names of unit tests methods for stub, mock and fake
+
+Stub:
+test_displayBoard
+
+Mock:
+test_getPlayerMove_mock
+test_getPlayerMove_Mockito_version
+
+Fake:
+test_saveBoard
+
