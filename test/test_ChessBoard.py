@@ -1,7 +1,7 @@
 import sys
 sys.path.append('../src')
 sys.path.append('/home/derek/TSI1/Individual/src')
-
+from unittest.mock import MagicMock
 import ChessBoard
 import unittest
 import TestInput
@@ -212,7 +212,7 @@ class TestChessBoard(unittest.TestCase):
 
 
 
-    def test_getPlayerMove(self):
+    def test_getPlayerMove_mock(self):
         sample_gameData = self.reference_gameData
         player_enters = ["e2", "e4"]
         self.test_input.set_list_of_test_inputs(player_enters)
@@ -225,6 +225,31 @@ class TestChessBoard(unittest.TestCase):
 
         errorOutputsDisplayed = self.test_output.get_list_of_test_outputs()
         self.assertEquals([], errorOutputsDisplayed)
+
+
+    def test_getPlayerMove_Mockito_version(self):
+        sample_gameData = self.reference_gameData
+        player_enters_from = "e2"
+        player_enters_to = "e4"
+        
+        self.chessBoard.inputSquareToMoveFrom = MagicMock(return_value=player_enters_from)
+        self.chessBoard.inputSquareToMoveTo = MagicMock(return_value = player_enters_to)
+        gameData, isGameInProgress, moveFromCoordinate, moveToCoordinate = self.chessBoard.getPlayerMove(sample_gameData)
+
+        self.assertEquals(gameData, sample_gameData)
+        self.assertTrue(isGameInProgress)
+        self.assertEquals("e2", moveFromCoordinate)
+        self.assertEquals("e4", moveToCoordinate)
+
+        errorOutputsDisplayed = self.test_output.get_list_of_test_outputs()
+        self.assertEquals([], errorOutputsDisplayed)
+
+
+
+
+
+
+
 
 
     def test_movePiece(self):
