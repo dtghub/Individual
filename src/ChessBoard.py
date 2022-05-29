@@ -3,11 +3,13 @@ import sqlite3
 # sys.path.append('/home/derek/TSI1/Individual')
 import ConsoleInput
 import ConsoleOutput
+import FileDB
 
 class ChessBoard:
 
     game_input = ConsoleInput.ConsoleInput()
     game_output = ConsoleOutput.ConsoleOutput()
+    db_connection = FileDB.FileDB()
 
 
     def set_game_input(self, game_input):
@@ -15,6 +17,10 @@ class ChessBoard:
 
     def set_game_output(self, game_output):
         self.game_output = game_output
+
+    def set_DB_source(self, db_connection):
+        self.db_connection = db_connection
+
 
 
 
@@ -181,7 +187,7 @@ class ChessBoard:
 
 
     def saveBoard(self, chessBoard):
-        databaseConnection = sqlite3.connect('chessBoard.db')
+        databaseConnection = self.db_connection.dbConnect('chessBoard.db')
         databaseCursor = databaseConnection.cursor()
 
         isAlreadyExistingTable = self.checkIfBoardTableAlreadyExists(databaseCursor)
@@ -218,7 +224,7 @@ class ChessBoard:
 
 
     def loadBoard(self, chessBoard):
-        databaseConnection = sqlite3.connect('chessBoard.db')
+        databaseConnection = self.db_connection.dbConnect('chessBoard.db')
         databaseCursor = databaseConnection.cursor()
 
         isAlreadyExistingTable = self.checkIfBoardTableAlreadyExists(databaseCursor)

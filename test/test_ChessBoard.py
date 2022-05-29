@@ -6,6 +6,7 @@ import ChessBoard
 import unittest
 import TestInput
 import TestOutput
+import TestMemoryDB
 
 
 
@@ -14,6 +15,8 @@ class TestChessBoard(unittest.TestCase):
     chessBoard = ChessBoard.ChessBoard()
     test_input = TestInput.TestInput()
     test_output = TestOutput.TestOutput()
+    test_memoryDB = TestMemoryDB.TestMemoryDB()
+
 
     @classmethod
     def setUpClass(cls):
