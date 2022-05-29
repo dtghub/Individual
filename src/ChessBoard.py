@@ -204,9 +204,8 @@ class ChessBoard:
         for row in chessBoard:
             sqlInsertString = 'INSERT INTO board(row) VALUES("' + row + '")'
             databaseCursor.execute(sqlInsertString)
-        databaseConnection.commit()
         self.emphasisedOutputText("Current position saved.")
-
+        return(databaseConnection)
 
 
 
@@ -233,9 +232,8 @@ class ChessBoard:
         else:
             self.emphasisedOutputText("No save game found.")
 
-        databaseConnection.close()
         self.emphasisedOutputText("Preiously saved board has been loaded.")
-        return(chessBoard)
+        return(chessBoard, databaseConnection)
 
 
 
@@ -248,9 +246,11 @@ class ChessBoard:
             self.outputText("Exiting game.\n\n")
             isGameInProgress = False
         elif inputStringToCheck.upper() == "S":
-            self.saveBoard(chessBoard)
+            databaseConnection = self.saveBoard(chessBoard)
+            databaseConnection.commit()
         elif inputStringToCheck.upper() == "L":
-            chessBoard = self.loadBoard(chessBoard)
+            chessBoard, databaseConnection = self.loadBoard(chessBoard)
+            databaseConnection.close()
         else:
             self.emphasisedOutputText("Sorry, I don't understand " + inputStringToCheck)
         return(isGameInProgress, chessBoard)
