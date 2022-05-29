@@ -234,6 +234,17 @@ class TestChessBoard(unittest.TestCase):
 
 
 
+    def test_saveBoard(self):
+        boardToSave = self.reference_chessBoardList
+        databaseConnection = self.chessBoard.saveBoard(boardToSave)
+        boardSavedToMemory = self.test_memoryDB.readBoardFromDB(databaseConnection)
+        self.assertEquals(boardToSave, boardSavedToMemory)
+
+        outputText = self.test_output.get_list_of_test_outputs()
+        self.assertEquals(outputText[0], ["\n***Current position saved.***"])
+
+
+
 
 
 
