@@ -29,6 +29,47 @@ class TestChessBoard(unittest.TestCase):
             "RNBQKBNR",
         ]
 
+        cls.reference_chessBoardList_moved = [
+            "",
+            "rnbqkbnr",
+            "pppp.ppp",
+            "........",
+            "....p...",
+            "........",
+            "........",
+            "PPPPPPPP",
+            "RNBQKBNR",
+        ]        
+
+        cls.reference_gameData = {
+            "board": [
+                "",
+                "rnbqkbnr",
+                "pppppppp",
+                "........",
+                "........",
+                "........",
+                "........",
+                "PPPPPPPP",
+                "RNBQKBNR",
+            ]
+        }
+
+        cls.reference_gameData_moved = {
+            "board": [
+                "",
+                "rnbqkbnr",
+                "pppp.ppp",
+                "........",
+                "....p...",
+                "........",
+                "........",
+                "PPPPPPPP",
+                "RNBQKBNR",
+            ]
+        }
+
+
         cls.chessBoard.set_game_output(cls.test_output)
         cls.chessBoard.set_game_input(cls.test_input)
         cls.listOfColumnLetters = "abcdefgh"
@@ -117,6 +158,34 @@ class TestChessBoard(unittest.TestCase):
 
 
 
+    def test_assembleChessBoardString(self):
+        testBoard = self.reference_chessBoardList
+        expectedOutput = "8 |RNBQKBNR| 8\n7 |PPPPPPPP| 7\n6 |........| 6\n5 |........| 5\n4 |........| 4\n3 |........| 3\n2 |pppppppp| 2\n1 |rnbqkbnr| 1\n"
+        chessBoardString = self.chessBoard.assembleChessBoardString(testBoard)
+        self.assertEquals(expectedOutput, chessBoardString)
+
+
+
+
+
+    def test_displayBoard(self):
+        testBoard = self.reference_chessBoardList
+        expectedOutput = ["\n   abcdefgh\n   --------\n8 |RNBQKBNR| 8\n7 |PPPPPPPP| 7\n6 |........| 6\n5 |........| 5\n4 |........| 4\n3 |........| 3\n2 |pppppppp| 2\n1 |rnbqkbnr| 1\n   --------\n   abcdefgh\n"]
+        self.chessBoard.displayBoard(testBoard)
+        outputText = self.test_output.get_list_of_test_outputs()
+        self.assertEquals(outputText[0], expectedOutput)
+
+
+
+
+
+
+
+
+
+
+
+
 
     def test_getInputFromPlayer_e1(self):
         player_enters = "e2"
@@ -133,6 +202,32 @@ class TestChessBoard(unittest.TestCase):
         self.assertFalse(isValidInput)
         self.assertEquals(playerInput, player_enters)
 
+
+
+
+
+
+
+    def test_getPlayerMove(self):
+        sample_gameData = self.reference_gameData
+        player_enters = ["e2", "e4"]
+        self.test_input.set_list_of_test_inputs(player_enters)
+        gameData, isGameInProgress, moveFromCoordinate, moveToCoordinate = self.chessBoard.getPlayerMove(sample_gameData)
+
+        self.assertEquals(gameData, sample_gameData)
+        self.assertTrue(isGameInProgress)
+        self.assertEquals("e2", moveFromCoordinate)
+        self.assertEquals("e4", moveToCoordinate)
+
+        errorOutputsDisplayed = self.test_output.get_list_of_test_outputs()
+        self.assertEquals([], errorOutputsDisplayed)
+
+
+    def test_movePiece(self):
+        initialBoard =  self.reference_chessBoardList
+        movedBoard = self.reference_chessBoardList_moved
+        test_movedBoard = self.chessBoard.movePiece(initialBoard, "e2", "e4")
+        self.assertEquals(movedBoard, test_movedBoard)
 
 
 
