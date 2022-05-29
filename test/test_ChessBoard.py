@@ -75,6 +75,7 @@ class TestChessBoard(unittest.TestCase):
 
         cls.chessBoard.set_game_output(cls.test_output)
         cls.chessBoard.set_game_input(cls.test_input)
+        cls.chessBoard.set_DB_source(cls.test_memoryDB)
         cls.listOfColumnLetters = "abcdefgh"
 
 
